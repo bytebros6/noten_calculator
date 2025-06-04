@@ -1,4 +1,4 @@
-export type kurs_art = 'E' | 'G';
+export type level = 'E' | 'G';
 
 export type note_string =
     | '1-'
@@ -22,7 +22,7 @@ export type note_number = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
 
 export type Grade = {
     subject: Subject;
-    level: kurs_art;
+    level: level;
     note: note_string;
     weight: number;
     zap?: note_string;
@@ -41,8 +41,10 @@ export type Subject =
     | 'sport'
     | 'musik';
 
-export type GradeSubmission =
-    //[key in Subject]: Grade;
-    Grade[];
+export type GradeSubmission = Grade[];
+
+export type GradeSubmissionMap = {
+    [key in Subject]: Grade;
+};
 
 export type GradeResponse = { passing: true; average: number } | { passing: false; average: number; feedback: string };
