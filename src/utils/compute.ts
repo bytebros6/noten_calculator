@@ -10,44 +10,6 @@ import {
     type Subject,
 } from './types';
 
-const noteStringToNumberMap: Record<NoteString, NoteNumber> = {
-    '1+': 15,
-    '1': 14,
-    '1-': 13,
-    '2+': 12,
-    '2': 11,
-    '2-': 10,
-    '3+': 9,
-    '3': 8,
-    '3-': 7,
-    '4+': 6,
-    '4': 5, // passing??
-    '4-': 4,
-    '5+': 3,
-    '5': 2,
-    '5-': 1,
-    '6': 0,
-};
-//es tut mir so leid es ist so hässlich aber ich hatte keinen bock
-const noteNumberToStringMap: Record<NoteNumber, NoteString> = {
-    15: '1+',
-    14: '1',
-    13: '1-',
-    12: '2+',
-    11: '2',
-    10: '2-',
-    9: '3+',
-    8: '3',
-    7: '3-',
-    6: '4+',
-    5: '4', // passing??
-    4: '4-',
-    3: '5+',
-    2: '5',
-    1: '5-',
-    0: '6',
-};
-
 function toGradeSubmissionMap(arr: GradeSubmission): GradeSubmissionMap {
     const map = {} as GradeSubmissionMap;
     for (const grade of arr) {
@@ -66,11 +28,32 @@ function toGradeSubmissionMap(arr: GradeSubmission): GradeSubmissionMap {
     return map;
 }
 
+const NOTE_ORDER: NoteString[] = [
+    '1+',
+    '1',
+    '1-',
+    '2+',
+    '2',
+    '2-',
+    '3+',
+    '3',
+    '3-',
+    '4+',
+    '4',
+    '4-',
+    '5+',
+    '5',
+    '5-',
+    '6',
+];
+
 function noteStringToNumber(note: NoteString): NoteNumber {
-    return noteStringToNumberMap[note];
+    const index = NOTE_ORDER.indexOf(note);
+    return (NOTE_ORDER.length - 1 - index) as NoteNumber;
 }
-function noteNumberToString(note: NoteNumber): NoteString {
-    return noteNumberToStringMap[note];
+
+function noteNumberToString(num: NoteNumber): NoteString {
+    return NOTE_ORDER[NOTE_ORDER.length - 1 - num];
 }
 
 function computeAverage(grades: GradeSubmissionMap): number {
