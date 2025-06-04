@@ -1,6 +1,6 @@
-export type level = 'E' | 'G';
+export type Level = 'E' | 'G';
 
-export type note_string =
+export type NoteString =
     | '1-'
     | '1'
     | '1+'
@@ -18,15 +18,15 @@ export type note_string =
     | '5+'
     | '6';
 
-export type note_number = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15;
+export type NoteNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15;
 
 export type Grade = {
     subject: Subject;
-    level?: level;
-    note?: note_string;
+    level?: Level;
+    note?: NoteString;
     weight?: number;
-    zap?: note_string;
-    projekt?: note_string;
+    zap?: NoteString;
+    projekt?: NoteString;
 };
 
 export type Subject =
