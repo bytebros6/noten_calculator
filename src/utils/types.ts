@@ -36,4 +36,6 @@ export type GradeSubmissionMap = {
     [key in Subject]: Grade;
 };
 
-export type GradeResponse = { passing: true; average: number } | { passing: false; average: number; feedback: string };
+export type GradeResponse =
+    | { passing: true; average: NoteString }
+    | { passing: false; average: NoteString; feedback: string[] };
