@@ -72,19 +72,10 @@ function computeAverage(grades: GradeSubmissionMap): number {
     return totalWeight > 0 ? weightedSum / totalWeight : 0;
 }
 
-function computeMainSubjectPassing(grades: GradeSubmissionMap): Subject[] {
-    return mainSubjects.filter((subject) => {
+function computeSubjectPassing(subjects: Subject[], grades: GradeSubmissionMap): Subject[] {
+    return subjects.filter((subject) => {
         const grade = grades[subject];
-        if (!grade.note) throw new Error(`Missing note for main subject: ${subject}`);
-        return noteStringToNumber(grade.note) <= 3;
-    });
-}
-
-function computeOtherSubjectPassing(grades: GradeSubmissionMap): Subject[] {
-    const otherSubjects: Subject[] = allSubjects.filter((subj) => !mainSubjects.includes(subj));
-    return otherSubjects.filter((subject) => {
-        const grade = grades[subject];
-        if (!grade.note) throw new Error(`Missing note for main subject: ${subject}`);
+        if (!grade.note) throw new Error(`Missing note for subject: ${subject}`);
         return noteStringToNumber(grade.note) <= 3;
     });
 }
@@ -96,10 +87,11 @@ export function computePassing(arr: GradeSubmission): GradeResponse {
     const tempAvg = Math.round(computeAverage(grades)) as NoteNumber;
     const average: NoteString = noteNumberToString(tempAvg);
 
-    const mainSubjectFailing = computeMainSubjectPassing(grades);
+    const mainSubjectFailing = computeSubjectPassing(mainSubjects, grades);
     const mainSubjectPassing = mainSubjectFailing.length < 2;
 
-    const otherSubjectFailing = computeOtherSubjectPassing(grades);
+    const otherSubjects = allSubjects.filter((subj) => !mainSubjects.includes(subj)) as Subject[];
+    const otherSubjectFailing = computeSubjectPassing(otherSubjects, grades);
 
     passing = tempAvg >= 5 && mainSubjectPassing; //
 
