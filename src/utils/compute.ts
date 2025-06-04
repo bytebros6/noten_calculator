@@ -81,6 +81,8 @@ function computeSubjectPassing(subjects: Subject[], grades: GradeSubmissionMap):
 }
 
 export function computePassing(arr: GradeSubmission): GradeResponse {
+    if (arr.some((grade) => !grade.note)) return { status: false, error: 'Nicht alle Noten eingetragen' };
+
     const grades = toGradeSubmissionMap(arr);
     let passing = false;
     let feedback: string[] = [];
