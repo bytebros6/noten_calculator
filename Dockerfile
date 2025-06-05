@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package.json pnpm-lock.yaml ./
 
-# Install pnpm and dependencies
-RUN npm install -g pnpm
+RUN npm install -g npm@latest
+RUN npm install -g pnpm@10.11.0
 RUN pnpm install
 
 # Copy source code
