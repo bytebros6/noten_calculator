@@ -5,15 +5,14 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package.json pnpm-lock.yaml ./
 
-RUN npm install -g npm@latest
-RUN npm install -g pnpm@10.11.0
-RUN pnpm install
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 4173 
 
 # Start the development server with explicit host binding
-CMD ["pnpm", "dev", "--host", "0.0.0.0"]
+RUN pnpm build
+CMD ["pnpm", "preview"]
