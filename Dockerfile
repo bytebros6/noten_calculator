@@ -1,3 +1,4 @@
+
 # ---
 # Stage 1: Building with node and pnpm
 # ---
@@ -27,8 +28,8 @@ FROM nginx:stable-alpine as runner
 # Copy built assets from build stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Replace nginx main configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port
 EXPOSE 3000
