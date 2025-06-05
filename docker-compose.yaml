@@ -7,8 +7,6 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: development
-    ports:
-      - "3000:3000"
     restart: unless-stopped
     volumes:
       # Mount source code for hot reloading, but exclude node_modules
