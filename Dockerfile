@@ -1,19 +1,19 @@
-FROM node:22-alpine
+FROM node:lts-alpine
 
 WORKDIR /app
 
+# Install pnpm via corepack
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Copy package files first for better caching
 COPY package.json pnpm-lock.yaml ./
-
-RUN npm install -g npm@latest
-RUN npm install -g pnpm@10.11.0
 RUN pnpm install
 
 # Copy source code
 COPY . .
 
+# Start the webapp with explicit host and port binding
+RUN pnpm run build --host 0.0.0.0 --port 3000
+
 # Expose the port
 EXPOSE 3000
-
-# Start the development server with explicit host binding
-CMD ["pnpm", "dev", "--host", "0.0.0.0"]
