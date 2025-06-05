@@ -14,7 +14,6 @@ const NotenInput = ({ grade, type, setGradeField }: Props) => {
         <Input
             value={note}
             onChange={(e) => setGradeField(grade.subject, type, e.target.value)}
-            list="noten-options"
             placeholder="Note"
             className={`h-8 w-24 ${!allNotes.includes(note) ? 'border-destructive' : ''}`}
         />
