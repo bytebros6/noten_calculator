@@ -1,20 +1,34 @@
 import { useState } from 'react';
 import { FolderDown, Trash2 } from 'lucide-react';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogDescription,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useStudentContext } from '@/contexts/StudentContext';
 
 type Props = {
+    onOpen: () => void;
     onSelect: (name: string) => void;
 };
 
-export default function NamePickerDialog({ onSelect }: Props) {
+export default function NamePickerDialog({ onSelect, onOpen }: Props) {
     const { storedStudents, deleteStudent } = useStudentContext();
 
     const [open, setOpen] = useState(false);
 
+    const handleOpenClick = (isOpening: boolean) => {
+        setOpen(isOpening);
+        if (isOpening) onOpen();
+    };
+
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={handleOpenClick}>
             <DialogTrigger asChild>
                 <Button variant="outline">
                     <FolderDown /> Load
@@ -24,6 +38,9 @@ export default function NamePickerDialog({ onSelect }: Props) {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Schüler auswählen</DialogTitle>
+                    <DialogDescription className="sr-only">
+                        Wählen Sie einen Schüler aus der Liste aus.
+                    </DialogDescription>
                 </DialogHeader>
 
                 {storedStudents.length > 0 ? (

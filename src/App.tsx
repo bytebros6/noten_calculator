@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Save } from 'lucide-react';
+import { CloudUpload, FolderCheck, Save } from 'lucide-react';
+import { toast } from 'sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import NotenInput from '@/components/NotenInput';
 import LevelInput from '@/components/LevelInput';
@@ -26,6 +27,8 @@ function App() {
     const [gradeResponse, setGradeResponse] = useState<GradeResponse>();
 
     const [hasTriedToSave, setHasTriedToSave] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [saveToasts, setSaveToasts] = useState<string[]>([]);
 
     const setGradeLevel = (subject: Subject, newLevel: Level) => {
         setGrades((prev) => prev.map((g) => (g.subject === subject ? { ...g, level: newLevel } : g)));
@@ -45,6 +48,31 @@ function App() {
             newGrades.set(selectedStudent, grades);
             return newGrades;
         });
+
+        setIsSaving(true);
+        setTimeout(() => {
+            setIsSaving(false);
+        }, 500);
+
+        const toastId = Date.now().toString();
+        setSaveToasts((prev) => [...prev, toastId]);
+        toast('', {
+            id: toastId,
+            description: (
+                <div className="flex items-center gap-2">
+                    <FolderCheck size={18} />
+                    <p>
+                        Schüler <strong>{selectedStudent}</strong> wurde erfolgreich gespeichert
+                    </p>
+                </div>
+            ),
+            duration: 3000,
+        });
+    };
+
+    const closeAllSaveToasts = () => {
+        saveToasts.forEach((id) => toast.dismiss(id));
+        setSaveToasts([]);
     };
 
     const loadStudent = (name: string) => {
@@ -79,9 +107,14 @@ function App() {
                     />
                 </div>
                 <div className="flex gap-2 justify-between">
-                    <NamePickerDialog onSelect={loadStudent} />
-                    <Button variant="secondary" onClick={saveCurrentStudent}>
-                        <Save /> Save
+                    <NamePickerDialog onOpen={closeAllSaveToasts} onSelect={loadStudent} />
+                    <Button
+                        className="disabled:pointer-events-auto disabled:cursor-wait"
+                        variant="secondary"
+                        onClick={saveCurrentStudent}
+                        disabled={isSaving}
+                    >
+                        {!isSaving ? <Save /> : <CloudUpload />} Save
                     </Button>
                 </div>
             </div>
