@@ -55,6 +55,11 @@ body,
     @apply flex flex-col w-full;
 }
 
+/* Fix for autoscroll to shadcn/radix select options */
+html body[data-scroll-locked] {
+    overflow: visible !important;
+}
+
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
