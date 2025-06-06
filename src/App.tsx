@@ -21,7 +21,8 @@ import { computePassing } from '@/utils/compute';
 import { useStudentContext } from '@/contexts/StudentContext';
 
 function App() {
-    const { selectedStudent, setSelectedStudent, getGradesByStudent, setStudentGrades } = useStudentContext();
+    const { selectedStudent, setSelectedStudent, getGradesByStudent, setStudentGrades, storedStudents } =
+        useStudentContext();
 
     const [grades, setGrades] = useState<GradeSubmission>(allSubjects.map((subject) => ({ subject } as Grade)));
     const [gradeResponse, setGradeResponse] = useState<GradeResponse>();
@@ -91,6 +92,12 @@ function App() {
 
         setGradeResponse(computePassing(grades));
     }, [grades]);
+
+    useEffect(() => {
+        if (selectedStudent && storedStudents.includes(selectedStudent)) {
+            loadStudent(selectedStudent);
+        }
+    }, []);
 
     return (
         <div className="flex flex-col items-center py-10 gap-4 mx-auto">
